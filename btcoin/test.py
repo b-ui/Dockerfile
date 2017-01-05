@@ -24,7 +24,7 @@ last = client.btcoin.SH_OKCOIN.find().sort('date', pymongo.DESCENDING).limit(1)
 if last.count():
     since = int(TZ_SH.localize(last[0]['date']).timestamp() * 1000)
 else:
-    since = int(datetime(2014, 1, 1).timestamp() * 1000)
+    since = int(TZ_SH.localize(datetime(2016, 1, 1)).timestamp() * 1000)
 
 klines = okcoin_spot.kline(k_type='1_1', since=since)
 print(since)

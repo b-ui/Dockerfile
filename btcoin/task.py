@@ -27,7 +27,7 @@ def get_okcoin_kline(k_type):
     if last.count():
         since = int(TZ_SH.localize(last[0]['date']).timestamp() * 1000)
     else:
-        since = None
+        since = int(TZ_SH.localize(datetime(2016, 1, 1)).timestamp() * 1000)
     print(datetime.fromtimestamp(since / 1000))
     klines = okcoin_spot.kline(k_type=k_type, since=since)
     for e in klines[:-1]:
