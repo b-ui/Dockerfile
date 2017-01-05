@@ -1,6 +1,10 @@
 # coding:utf-8
 from datetime import datetime
 
+import pytz
+
+tz = pytz.timezone("Asia/Shanghai")
+
 
 class BTCoin:
     def __init__(self, k_type, *args):
@@ -25,7 +29,7 @@ class BTCoin:
         return '{} {} {} {} {} {}'.format(self.date, self.open, self.high, self.low, self.close, self.volume)
 
     def _convert_time(self):
-        return datetime.fromtimestamp(self.timestamp / 1000)
+        return datetime.fromtimestamp(self.timestamp / 1000, tz=tz).replace(tzinfo=None)
 
     def to_document(self):
         return self.__dict__

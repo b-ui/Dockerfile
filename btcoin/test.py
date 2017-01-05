@@ -8,7 +8,7 @@ from pymongo.errors import DuplicateKeyError
 from interface.okcoin.OkcoinSpotAPI import OKCoinSpot
 from model.btcoin import BTCoin
 
-host = os.environ.get('MONGO_DB_ADDR') or '192.168.1.103'
+host = os.environ.get('MONGO_DB_ADDR') or '172.17.0.3'
 port = os.environ.get('MONGO_DB_PORT') or 27017
 
 client = MongoClient(host, int(port))
@@ -30,6 +30,7 @@ print(since)
 print(datetime.fromtimestamp(since / 1000))
 for e in klines[:-1]:
     btc = BTCoin('1_1', *e)
+    print(btc.date)
     try:
         client.btcoin.SH_OKCOIN.insert(btc.to_document())
     except DuplicateKeyError:
