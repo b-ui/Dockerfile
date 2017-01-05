@@ -1,0 +1,8 @@
+suds
+celery
+mongoengine
+numpy
+scipy
+matplotlib
+pandas
+TA-Lib
