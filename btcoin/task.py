@@ -9,6 +9,7 @@ from pytz import utc
 from database import client
 from interface.okcoin.OkcoinSpotAPI import OKCoinSpot
 from model.btcoin import BTCoin
+from model.btcoin import TZ_SH
 
 api_key = os.environ.get('API_KEY')
 secret_key = os.environ.get('SECRET_KEY')
@@ -24,9 +25,9 @@ scheduler.configure(timezone=utc)
 def get_okcoin_kline(k_type):
     last = client.btcoin.SH_OKCOIN.find().sort('date', pymongo.DESCENDING).limit(1)
     if last.count():
-        since = int(last[0]['date'].timestamp() * 1000)
+        since = int(TZ_SH.localize(last[0]['date']).timestamp() * 1000)
     else:
-        since = int(datetime(2014, 1, 1).timestamp() * 1000)
+        since = None
     print(datetime.fromtimestamp(since / 1000))
     klines = okcoin_spot.kline(k_type=k_type, since=since)
     for e in klines[:-1]:

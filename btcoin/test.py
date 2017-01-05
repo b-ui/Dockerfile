@@ -7,8 +7,9 @@ from pymongo.errors import DuplicateKeyError
 
 from interface.okcoin.OkcoinSpotAPI import OKCoinSpot
 from model.btcoin import BTCoin
+from model.btcoin import TZ_SH
 
-host = os.environ.get('MONGO_DB_ADDR') or '172.17.0.3'
+host = os.environ.get('MONGO_DB_ADDR') or '172.17.0.2'
 port = os.environ.get('MONGO_DB_PORT') or 27017
 
 client = MongoClient(host, int(port))
@@ -21,7 +22,7 @@ okcoin_spot = OKCoinSpot(okcoin_host, api_key, secret_key)
 
 last = client.btcoin.SH_OKCOIN.find().sort('date', pymongo.DESCENDING).limit(1)
 if last.count():
-    since = int(last[0]['date'].timestamp() * 1000)
+    since = int(TZ_SH.localize(last[0]['date']).timestamp() * 1000)
 else:
     since = int(datetime(2014, 1, 1).timestamp() * 1000)
 
