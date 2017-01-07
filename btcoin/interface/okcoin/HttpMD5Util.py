@@ -20,7 +20,6 @@ def httpGet(url, resource, params=''):
     conn = http.client.HTTPSConnection(url, timeout=10)
     conn.request("GET", resource + '?' + params)
     response = conn.getresponse()
-    print('http response status_code: {}'.format(response.status))
     data = response.read().decode('utf-8')
     return json.loads(data)
 

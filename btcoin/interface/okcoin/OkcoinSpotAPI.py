@@ -120,10 +120,15 @@ class OKCoinSpot:
     # 获取比特币或莱特币的K线数据
     def kline(self, symbol='btc_cny', k_type='1_1', size=None, since=None):
         unit_mapping = {
-            '1': 'min'
+            '1': 'min',
+            '2': 'day',
+            '3': 'week'
         }
         amount = k_type.split('_')[-1]
         unit = unit_mapping[k_type.split('_')[0]]
+        if unit == 'min' and int(amount) > 30:
+            unit = 'hour'
+            amount = str(int(int(amount) / 60))
         _type = amount + unit
         KLINE_RESOURCE = "/api/v1/kline.do"
         params = ''
