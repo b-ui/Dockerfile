@@ -25,7 +25,6 @@ def get_last_document(k_type):
     cyc_type = k_type.split('_')[0]
     cyc_def = k_type.split('_')[-1]
     _filter = {'cycType': int(cyc_type), 'cycDef': int(cyc_def)}
-    print(_filter)
     return client.btcoin.SH_OKCOIN.find(_filter).sort('date', pymongo.DESCENDING).limit(1)
 
 
@@ -37,10 +36,10 @@ def get_okcoin_kline(k_type):
         since = int(TZ_SH.localize(datetime(2016, 1, 1)).timestamp() * 1000)
     print(datetime.fromtimestamp(since / 1000))
     klines = okcoin_spot.kline(k_type=k_type, since=since)
-    for e in klines[:-1]:
+    for e in klines:
         btc = BTCoin(k_type, *e)
         try:
-            client.btcoin.SH_OKCOIN.insert(btc.to_document())
+            client.btcoin.SH_OKCOIN.update(btc.index, {'$set': btc.to_document()}, upsert=True)
         except DuplicateKeyError:
             pass
 

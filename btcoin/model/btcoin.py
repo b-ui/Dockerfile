@@ -33,3 +33,7 @@ class BTCoin:
 
     def to_document(self):
         return self.__dict__
+
+    @property
+    def index(self):
+        return {'cycType': self.cycType, 'cycDef': self.cycDef, 'date': self.date}

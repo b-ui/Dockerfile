@@ -38,14 +38,13 @@ else:
     since = int(TZ_SH.localize(datetime(2016, 1, 1)).timestamp() * 1000)
 
 klines = okcoin_spot.kline(k_type=k_type, since=since)
-print(klines)
 print(since)
 print(datetime.fromtimestamp(since / 1000))
-for e in klines[:-1]:
+for e in klines:
     btc = BTCoin(k_type, *e)
     print(btc.date)
     try:
-        client.btcoin.SH_OKCOIN.insert(btc.to_document())
+        client.btcoin.SH_OKCOIN.update(btc.index, {'$set': btc.to_document()}, upsert=True)
     except DuplicateKeyError:
         pass
 print(len(klines))
