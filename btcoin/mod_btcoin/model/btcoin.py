@@ -1,9 +1,7 @@
 # coding:utf-8
 from datetime import datetime
 
-import pytz
-
-TZ_SH = pytz.timezone("Asia/Shanghai")
+from common.time_util import TZ_SH
 
 
 class BTCoin:

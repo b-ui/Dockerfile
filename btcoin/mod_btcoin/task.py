@@ -7,9 +7,9 @@ from pymongo.errors import DuplicateKeyError
 from pytz import utc
 
 from database import client
-from interface.okcoin.OkcoinSpotAPI import OKCoinSpot
-from model.btcoin import BTCoin
-from model.btcoin import TZ_SH
+from mod_btcoin.interface.okcoin.OkcoinSpotAPI import OKCoinSpot
+from mod_btcoin.model.btcoin import BTCoin
+from mod_btcoin.model.btcoin import TZ_SH
 
 api_key = os.environ.get('API_KEY')
 secret_key = os.environ.get('SECRET_KEY')

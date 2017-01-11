@@ -13,4 +13,4 @@ RUN apt purge -y python3-dev
 RUN rm -rf /var/lib/apt/lists/* 
 RUN rm -rf /tmp/*
 
-CMD python3 /home/run.py
+CMD python3 /home/run_okcoin_kline.py

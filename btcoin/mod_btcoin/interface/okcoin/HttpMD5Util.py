@@ -6,6 +6,7 @@ import hashlib
 import http.client
 import json
 import urllib
+from common.log_util import logger
 
 
 def buildMySign(params, secretKey):
@@ -35,4 +36,4 @@ def httpPost(url, resource, params):
     data = response.read().decode('utf-8')
     params.clear()
     conn.close()
-    return data
+    return json.loads(data)
