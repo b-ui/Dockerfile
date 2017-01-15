@@ -6,7 +6,6 @@ import hashlib
 import http.client
 import json
 import urllib
-from common.log_util import logger
 
 
 def buildMySign(params, secretKey):

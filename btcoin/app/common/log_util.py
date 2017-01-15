@@ -85,4 +85,4 @@ format_str = '{record.time:%Y-%m-%d %H:%M:%S.%f} {record.level_name} {record.mod
              ' {record.func_name} - {record.message}'
 
 stream_handler = StreamHandler(sys.stdout, format_string=format_str, bubble=True)
-stream_handler.push_application()
+

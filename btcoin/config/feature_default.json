@@ -1,0 +1,6 @@
+{
+  "sentry": {
+    "active": false,
+    "description": "Sentry"
+  }
+}

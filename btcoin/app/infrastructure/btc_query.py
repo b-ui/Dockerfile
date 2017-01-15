@@ -1,7 +1,7 @@
 # coding: utf-8
 import pymongo
 
-from infrastructure.model.chan import ChanKline, Trend, Centre, Fractal, Kline
+from app.infrastructure.model.chan import ChanKline, Trend, Centre, Fractal, Kline
 
 
 class SingleQuery(object):
