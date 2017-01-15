@@ -4,7 +4,7 @@ import pymongo
 from app.infrastructure.model.chan import ChanKline, Trend, Centre, Fractal, Kline
 
 
-class SingleQuery(object):
+class Query(object):
     def __init__(self, client, db, code, limit=100):
         self.client = client
         self.db = db
@@ -36,6 +36,11 @@ class SingleQuery(object):
         cur = self.client[self.db].centre.find(condition).sort('index', pymongo.DESCENDING).limit(self.limit)
         return [Centre(e) for e in cur]
 
+
+class ChanQuery(Query):
+    def __init__(self, client, db, code, limit=100):
+        super(ChanQuery, self).__init__(client, db, code, limit)
+
     def original_k(self, location, ktype):
         abs_location = abs(location)
         original_k_list = self.get_original_ks(ktype)
@@ -47,6 +52,11 @@ class SingleQuery(object):
         chan_k_list = self.get_chan_ks(ktype)
         res = chan_k_list[abs_location - 1] if len(chan_k_list) >= abs_location else None
         return res
+
+    def chan_k_from(self, ktype, level, date):
+        condition = {'windCode': self.code, 'ktype': ktype, 'level': level, 'datetime': {'$gte': date}}
+        cur = self.client[self.db].chankline.find(condition).sort('index', pymongo.ASCENDING)
+        return [ChanKline(e) for e in cur]
 
     def trend(self, location, ktype, level):
         abs_location = abs(location)
@@ -64,6 +74,11 @@ class SingleQuery(object):
         fractal_list = self.get_fractals(ktype)
         res = fractal_list[abs_location - 1] if len(fractal_list) >= abs_location else None
         return res
+
+    def fractal_from(self, ktype, level, date):
+        condition = {'windCode': self.code, 'ktype': ktype, 'level': level, 'eigen_chan_kline_datetime': {'$gte': date}}
+        cur = self.client[self.db].fractal.find(condition).sort('index', pymongo.ASCENDING)
+        return [Fractal(e) for e in cur]
 
     def centre(self, location, ktype, level):
         abs_location = abs(location)
@@ -85,3 +100,9 @@ class SingleQuery(object):
 
     def bi_from(self, ktype, date):
         return self.trend_from(ktype, '-1', date)
+
+    def duan_from(self, ktype, date):
+        return self.trend_from(ktype, '0', date)
+
+    def level1_from(self, ktype, date):
+        return self.trend_from(ktype, '1', date)

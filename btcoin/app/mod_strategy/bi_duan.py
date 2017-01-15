@@ -3,14 +3,14 @@ import os
 from app.common.log_util import logger
 
 from app.common.chan import chan_max, chan_min
-from app.infrastructure.btc_query import SingleQuery
+from app.infrastructure.btc_query import ChanQuery
 from app.mod_finance.trader import OKCoinTrader
 from database import client
 
 api_key = os.environ.get('API_KEY')
 secret_key = os.environ.get('SECRET_KEY')
 
-btc_query = SingleQuery(client, 'btc_chan', 'OKCOIN.SH')
+btc_query = ChanQuery(client, 'btc_chan', 'OKCOIN.SH')
 btc_trader = OKCoinTrader('btc_cny', api_key, secret_key)
 
 account = {
