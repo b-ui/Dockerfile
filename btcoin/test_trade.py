@@ -1,6 +1,6 @@
 import os
 
-from app.infrastructure.btc_query import ChanQuery
+from app.infrastructure.chan_query import ChanQuery
 from app.mod_btcoin.interface.okcoin.OkcoinSpotAPI import OKCoinSpot
 from app.mod_finance.trader import OKCoinTrader
 from database import client

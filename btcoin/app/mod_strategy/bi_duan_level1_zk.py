@@ -25,7 +25,7 @@ account = {
 }
 
 
-def bi_duan_zk_buy():
+def bi_duan_zk_buy_1_1():
     try:
         last_duan = btc_query.duan(-1, '1_1')
         last_bi = btc_query.bi(-1, '1_1')
@@ -49,7 +49,7 @@ def bi_duan_zk_buy():
         print(account)
 
 
-def bi_duan_zk_sell():
+def bi_duan_zk_sell_1_1():
     try:
         last_duan = btc_query.duan(-1, '1_1')
         last_bi = btc_query.bi(-1, '1_1')

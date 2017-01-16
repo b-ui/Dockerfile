@@ -61,7 +61,7 @@ class OKCoinTrader(object):
             return
         order_id = str(uuid.uuid4())
         create_transaction(self.symbol, order_id, 'simu_buy_market', price=account['cny'], amount=amount,
-                           avg_price=ticker['sell'])
+                           avg_price=ticker['sell'], account=account)
         account['btc'] += amount
         account['cny'] -= sell_1 * amount
 

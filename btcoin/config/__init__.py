@@ -1,47 +1,18 @@
 # coding: UTF-8
 import os
 
-from config.config import DevelopmentMysqlConfig, DevelopmentSqliteConfig, DevelopmentSqliteMemoryConfig
-from config.config import TestingConfig, ProductionConfig, DevelopmentSqliteConfig
+from app.infrastructure.chan_query import ChanQuery
+from app.mod_finance.trader import OKCoinTrader
 from config.feature_toggle import feature_with
+from database import client
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
-config = {
-    'development_mysql': DevelopmentMysqlConfig,
-    'development_sqlite': DevelopmentSqliteConfig,
-    'development_memory': DevelopmentSqliteMemoryConfig,
-    'testing': TestingConfig,
-    'production': ProductionConfig,
-    'default': DevelopmentSqliteConfig
-}
+api_key = os.environ.get('API_KEY')
+secret_key = os.environ.get('SECRET_KEY')
 
-
-def load_config():
-    """Load config."""
-    mode = os.environ.get('MODE')
-    print("mode: " + str(mode))
-
-    try:
-        if mode == 'PRODUCTION':
-            return 'production'
-        elif mode == 'TESTING':
-            return 'testing'
-        elif mode == 'DEV_MYSQL':
-            return 'development_mysql'
-        elif mode == 'DEV_SQLITE':
-            return 'development_sqlite'
-        elif mode == 'DEV_MEM':
-            return 'development_memory'
-        else:
-            return 'default'
-
-    except ImportError:
-        return 'default'
-
-
-def load_db_config():
-    return config[load_config()]
+btc_query = ChanQuery(client, 'btc_chan', 'OKCOIN.SH')
+btc_trader = OKCoinTrader('btc_cny', api_key, secret_key)
 
 
 class ApschedulerConfig(object):

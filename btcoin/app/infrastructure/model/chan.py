@@ -1,6 +1,5 @@
 # coding:utf-8
 from bson.json_util import dumps
-from database import client
 
 
 class Base(object):
@@ -91,10 +90,8 @@ class Fractal(Base):
         self.fractal_flag = document['fractal_flag']
         self.chan_kline_index_list = document['chan_kline_index_list']
         self.eigen_chan_kline_index = document['eigen_chan_kline_index']
+        self.eigen_chan_kline_datetime = document['eigen_chan_kline_datetime']
         self.fractal_interval = document['fractal_interval']
-        condition = {'windCode': self.windCode, 'ktype': self.ktype, 'index': self.eigen_chan_kline_index}
-        # new properties
-        self.datetime = client.chan.chankline.find(condition).limit(1)[0]['datetime']
 
 
 class Trend(Base):
@@ -148,24 +145,23 @@ class Trend(Base):
         self.subtrend_index_dict = document['subtrend_index_dict']
         if document['centre_index_dict'] is None: document['centre_index_dict'] = {}
         self.centre_index_dict = document['centre_index_dict']
+        self.force_ratio = document['force_ratio']
         self.start_time = document['start_time']
         self.end_time = document['end_time']
-        # new properties
-        # if self.direction == 1:
-        #     self.ratio = (self.high - self.low) / float(self.low)
-        # else:
-        #     self.ratio = (self.high - self.low) / float(self.high)
         self.count_kline = len(self.chankline_index_list)
         self.count_fractal = len(self.fractal_index_list)
-        # count_subtrend todo:
         self.count_subtrend = len(self.subtrend_index_dict.get('-1', []))
-        self.ratio = (self.shaped_high - self.shaped_low) / self.count_kline
         self.start_chan_k = self.chankline_index_list[0]
         self.end_chan_k = self.chankline_index_list[-1]
 
-    @property
-    def chan_k_index(self):
-        return self.chankline_index_list[-1]
+    def is_direction_up(self):
+        return self.direction == 1
+
+    def is_direction_down(self):
+        return self.direction == -1
+
+    def is_fractal_gte(self, amount):
+        return len(self.fractal_index_list) >= amount
 
 
 class Centre(Base):

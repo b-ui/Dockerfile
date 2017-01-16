@@ -21,6 +21,12 @@ class Query(object):
         cur = self.client[self.db].chankline.find(condition).sort('index', pymongo.DESCENDING).limit(self.limit)
         return [ChanKline(e) for e in cur]
 
+    def get_chan_k(self, ktype, index):
+        condition = {'windCode': self.code, 'ktype': ktype, 'index': index}
+        cur = self.client[self.db].chankline.find(condition)
+        chan_ks = [ChanKline(e) for e in cur]
+        return chan_ks[0] if chan_ks else None
+
     def get_trends(self, ktype, level):
         condition = {'windCode': self.code, 'ktype': ktype, 'level': level}
         cur = self.client[self.db].trend.find(condition).sort('index', pymongo.DESCENDING).limit(self.limit)
@@ -106,3 +112,4 @@ class ChanQuery(Query):
 
     def level1_from(self, ktype, date):
         return self.trend_from(ktype, '1', date)
+

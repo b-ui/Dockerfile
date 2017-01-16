@@ -5,6 +5,7 @@ from datetime import timedelta
 
 from flask import Flask, jsonify
 
+from flask_cors import CORS
 from app.common.log_util import stream_handler, logger
 from app.mod_strategy.task import scheduler
 from config import load_db_config, load_apscheduler_config
@@ -20,6 +21,7 @@ def create_app():
                                r'\xa0a<Z\x89?\xba\x80\x809\x8c\x90\xc2\xc79\xd5\x17'
     app.config['JWT_EXPIRATION_DELTA'] = timedelta(seconds=36000)
     app.config.from_object(load_apscheduler_config())
+    CORS(app)
     stream_handler.push_application()
     scheduler.init_app(app)
     scheduler.start()
